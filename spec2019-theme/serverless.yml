@@ -12,8 +12,8 @@ provider:
       Ref: WalletTable
     PAYMENT_HISTORY_TABLE:
       Ref: PaymentHistoryTable
-    NOTIFICATION_ENDPOINT: 'https://ii3c3sdjne.execute-api.us-west-2.amazonaws.com/prod/notification'
-    LOCATION_ENDPOINT: 'https://ii3c3sdjne.execute-api.us-west-2.amazonaws.com/prod/location'
+    NOTIFICATION_ENDPOINT: 'https://vgz50x9c4h.execute-api.us-west-2.amazonaws.com/dev/notification'
+    LOCATION_ENDPOINT: 'https://vgz50x9c4h.execute-api.us-west-2.amazonaws.com/dev/location'
   iamRoleStatements:
     - Effect: Allow
       Action:
