@@ -32,7 +32,7 @@ def _get_locations():
     global locations
     if locations is None:
         locations = json.loads(open('location.json', 'r').read())
-    return locations
+    return json.dumps(locations)
 
 
 def get_url(event, context):
