@@ -14,6 +14,7 @@ fake = None
 dynamo = None
 locations = None
 
+
 def _fake():
     global fake
     if fake is None:
@@ -32,14 +33,14 @@ def _get_locations():
     global locations
     if locations is None:
         locations = json.loads(open('location.json', 'r').read())
-    return json.dumps(locations)
+    return locations
 
 
 def get_url(event, context):
     item = _get_dynamo().Table(
         os.environ['TEAM_TABLE']).get_item(
             Key={'id': event['execution']['teamId']}
-        ).get('Item', {})
+    ).get('Item', {})
     if item.get('stop', False) is True:
         raise Exception('Stopped.')
     url = item.get('url')
@@ -114,7 +115,7 @@ def _charge_action(url, use_id, amount):
             'userId': use_id,
             'locationId': location_id,
             'chargeAmount': amount})
-    
+
     result = {
         'transactionId': transaction_id,
         'action': 'charge',
@@ -209,7 +210,8 @@ def recieve_notification(event, context):
 def location(event, context):
     return {
         'statusCode': 200,
-        'body': _get_locations()}
+        'body': json.dumps(_get_locations())
+    }
 
 
 def build_result(event, context):
@@ -362,7 +364,7 @@ def _check_summary(url, user, results, points):
         tmp = ret.get('timesPerLocation')
         messages.append(
             f'"timesPerLocation" expected "{times_per_location}" but got "{tmp}"')
-    
+
     if ok:
         if error_exists:
             points.append({
@@ -371,7 +373,7 @@ def _check_summary(url, user, results, points):
         else:
             elapsed_time = response.elapsed.total_seconds()
             points.append({
-                'point': math.floor(5 / elapsed_time) ,
+                'point': math.floor(5 / elapsed_time),
                 'reason': f'Elapsed time: {elapsed_time}, Action: summary, Suceeded.'})
     else:
         points.append({
